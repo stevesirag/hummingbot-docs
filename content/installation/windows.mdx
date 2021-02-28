@@ -111,13 +111,17 @@ cd ~
 # 2) Create folder for your new instance
 mkdir hummingbot_files
 
-# 2) Create folders for logs, config files and database file
+# 3) Create folders for logs, config files and database file
 mkdir hummingbot_files/hummingbot_conf
 mkdir hummingbot_files/hummingbot_logs
 mkdir hummingbot_files/hummingbot_data
 mkdir hummingbot_files/hummingbot_scripts
 
-# 3) Launch a new instance of hummingbot
+# 4) Create local hummingbot user, grant ownership of files
+adduser hummingbot //follow prompts, password not important
+chown hummingbot:hummingbot ~/hummingbot_files/*
+
+# 5) Launch a new instance of hummingbot
 docker run -it \
 --network host \
 --name hummingbot-instance \
@@ -125,6 +129,7 @@ docker run -it \
 --mount "type=bind,source=$(pwd)/hummingbot_files/hummingbot_logs,destination=/logs/" \
 --mount "type=bind,source=$(pwd)/hummingbot_files/hummingbot_data,destination=/data/" \
 --mount "type=bind,source=$(pwd)/hummingbot_files/hummingbot_scripts,destination=/scripts/" \
+--mount "type=bind,source=$(pwd)/hummingbot_files/hummingbot_certs,target=/certs" \
 coinalpha/hummingbot:latest
 ```
 
